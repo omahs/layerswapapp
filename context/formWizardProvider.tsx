@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react'
 import { KnownwErrorCode } from '../Models/ApiError';
 import { Steps } from '../Models/Wizard';
 
-const FormWizardStateContext = React.createContext(null);
-const FormWizardStateUpdateContext = React.createContext(null);
+export const FormWizardStateContext = React.createContext(null);
+export const FormWizardStateUpdateContext = React.createContext(null);
 
 type Direction = "back" | "forward"
 

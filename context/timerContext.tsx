@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useInterval } from '../hooks/useInterval';
 
-const TimerStateContext = React.createContext<DataContextType>(null);
+export const TimerStateContext = React.createContext<DataContextType>(null);
 
 
 type DataContextType = {

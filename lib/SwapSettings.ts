@@ -7,7 +7,7 @@ export default class SwapSettings {
         }
     }
 
-    private static _isInitialized = false;
+    static _isInitialized = false;
     public static Initialize() {
         if (SwapSettings._isInitialized) {
             return;

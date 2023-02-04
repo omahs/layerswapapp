@@ -10,8 +10,8 @@ import useSWR, { KeyedMutator } from 'swr';
 import { ApiResponse } from '../Models/ApiResponse';
 import NetworkSettings from '../lib/NetworkSettings';
 
-const SwapDataStateContext = React.createContext<SwapData>({ codeRequested: false, swap: undefined, swapFormData: undefined, addressConfirmed: false, walletAddress: "", depositeAddressIsfromAccount: false, withdrawManually: false });
-const SwapDataUpdateContext = React.createContext<UpdateInterface | null>(null);
+export const SwapDataStateContext = React.createContext<SwapData>({ codeRequested: false, swap: undefined, swapFormData: undefined, addressConfirmed: false, walletAddress: "", depositeAddressIsfromAccount: false, withdrawManually: false });
+export const SwapDataUpdateContext = React.createContext<UpdateInterface | null>(null);
 
 type UpdateInterface = {
     updateSwapFormData: (value: React.SetStateAction<SwapFormValues>) => void,

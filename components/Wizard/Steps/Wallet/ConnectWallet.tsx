@@ -3,19 +3,15 @@ import { FC, useCallback, useEffect, useState } from 'react'
 import { useFormWizardaUpdate } from '../../../../context/formWizardProvider';
 import { SwapWithdrawalStep } from '../../../../Models/Wizard';
 import SubmitButton from '../../../buttons/submitButton';
-import ImtblClient from '../../../../lib/imtbl';
 import { useSwapDataState, useSwapDataUpdate } from '../../../../context/swap';
-import toast from 'react-hot-toast';
-import LayerSwapApiClient from '../../../../lib/layerSwapApiClient';
 import { useSettingsState } from '../../../../context/settings';
 import { classNames } from '../../../utils/classNames';
 import { useInterval } from '../../../../hooks/useInterval';
 import { GetSwapStatusStep } from '../../../utils/SwapStatus';
 import shortenAddress from "../../../utils/ShortenAddress"
-import { ApiError, KnownwErrorCode } from '../../../../Models/ApiError';
 import { SwapStatus } from '../../../../Models/SwapStatus';
 
-const ConnectWalletStep: FC = () => {
+const ConnectWallet: FC = () => {
     const [loading, setLoading] = useState(false)
     const [verified, setVerified] = useState<boolean>()
     const [txidApplied, setTxidApplied] = useState(false)
@@ -23,10 +19,8 @@ const ConnectWalletStep: FC = () => {
     const [transactionId, setTransactionId] = useState<string>()
     const [transferDone, setTransferDone] = useState<boolean>()
     const { walletAddress, swap } = useSwapDataState()
-    const { setWalletAddress } = useSwapDataUpdate()
     const { setInterval } = useSwapDataUpdate()
     const { networks } = useSettingsState()
-    const { goToStep, setError } = useFormWizardaUpdate<SwapWithdrawalStep>()
 
     const { source_network: source_network_internal_name } = swap
     const source_network = networks.find(n => n.internal_name === source_network_internal_name)
@@ -38,10 +32,7 @@ const ConnectWalletStep: FC = () => {
 
     const applyNetworkInput = useCallback(async () => {
         try {
-            setApplyCount(old => old + 1)
-            const layerSwapApiClient = new LayerSwapApiClient()
-            await layerSwapApiClient.ApplyNetworkInput(swap.id, transactionId)
-            setTxidApplied(true)
+           
         }
         catch (e) {
             //TODO handle
@@ -59,52 +50,12 @@ const ConnectWalletStep: FC = () => {
 
     const swapStatusStep = GetSwapStatusStep(swap)
 
-    useEffect(() => {
-        if (swapStatusStep && swap.status != SwapStatus.UserTransferPending)
-            goToStep(swapStatusStep)
-    }, [swapStatusStep, swap])
-
     const handleConnect = useCallback(async () => {
-        setLoading(true)
-        try {
-            let address: string = walletAddress
-            if (!address) {
-                const imtblClient = new ImtblClient(source_network?.internal_name)
-                const res = await imtblClient.ConnectWallet()
-                setWalletAddress(res.address)
-                address = res.address
-            }
-        }
-        catch (e) {
-            toast(e.message)
-        }
-        setLoading(false)
+        
     }, [source_network])
 
-    
-
     const handleTransfer = useCallback(async () => {
-        setLoading(true)
-        try {
-            const imtblClient = new ImtblClient(source_network?.internal_name)
-            const res = await imtblClient.Transfer(swap.requested_amount.toString(), swap.deposit_address)
-            const transactionRes = res?.result?.[0]
-            if (!transactionRes)
-                toast('Transfer failed or terminated')
-            else if (transactionRes.status == "error") {
-                toast(transactionRes.message)
-            }
-            else if (transactionRes.status == "success") {
-                setTransactionId(transactionRes.txId.toString())
-                setTransferDone(true)
-                setInterval(2000)
-            }
-        }
-        catch (e) {
-            if (e?.message)
-                toast(e.message)
-        }
-        setLoading(false)
+       
     }, [walletAddress, swap, source_network])
 
     return (
@@ -204,4 +155,4 @@ function WalletSteps({ steps }) {
     )
 }
 
-export default ConnectWalletStep;
+export default ConnectWallet;

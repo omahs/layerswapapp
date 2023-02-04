@@ -11,9 +11,12 @@ import LayerSwapAuthApiClient from "./userAuthApiClient";
 
 export default class LayerSwapApiClient {
     static apiBaseEndpoint: string = AppSettings.LayerswapApiUri;
-
+    _router
+    _redirect
     _authInterceptor: AxiosInstance;
-    constructor(private readonly _router?: NextRouter, private readonly _redirect?: string) {
+    constructor(_router?: NextRouter, _redirect?: string) {
+        this._router = _router;
+        this._redirect = _redirect;
         this._authInterceptor = InitializeInstance(LayerSwapAuthApiClient.identityBaseEndpoint);
     }
 
@@ -96,7 +99,7 @@ export default class LayerSwapApiClient {
         return await this.AuthenticatedRequest<ApiResponse<void>>("POST", `/swaps/migrate`, null, { GuestAuthorization });
     }
 
-    private async AuthenticatedRequest<T extends EmptyApiResponse>(method: Method, endpoint: string, data?: any, header?: {}): Promise<T> {
+    async AuthenticatedRequest<T extends EmptyApiResponse>(method: Method, endpoint: string, data?: any, header?: {}): Promise<T> {
         let uri = LayerSwapApiClient.apiBaseEndpoint + "/api" + endpoint;
         return await this._authInterceptor(uri, { method: method, data: data, headers: { 'Access-Control-Allow-Origin': '*', ...(header ? header : {}) } })
             .then(res => {
