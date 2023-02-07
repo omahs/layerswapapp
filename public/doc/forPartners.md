@@ -19,7 +19,7 @@ Example: [Loopring & Coinbase](https://www.layerswap.io/?destNetwork=LOOPRING_MA
 
 - *lockNetwork = true* - To lock the provided network.
 
-- *asset* - To pre-select the asset. NOTE: available assets depend on the selected network, for example, the asset **LRC** is only available in **LOOPRING** network. Avilable values are: ***ETH***, ***USDC***, ***USDT*** and ***LRC***.
+- *asset* - To pre-select the asset. NOTE: available assets depend on the selected network, for example, the asset **LRC** is only available in **LOOPRING** network. Available values are: ***ETH***, ***USDC***, ***USDT*** and ***LRC***.
 
 - [Full template](https://www.layerswap.io/?destNetwork=zksync_mainnet&destAddress=zksync%3A0x4d70500858f9705ddbd56d007d13bbc92c9c67d1&lockNetwork=true&lockAddress=true&addressSource=argent&email=tantushyan2736%40gmail.com).
 
